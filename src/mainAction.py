@@ -1,8 +1,8 @@
 
-from sampleUI.console import Console
-from sampleUI.action import Action
-from sampleUI.userLoginAction import UserLoginAction
-from sampleUI.userRegisterAction import UserRegisterAction
+from console import Console
+from action import Action
+from userLoginAction import UserLoginAction
+from userRegisterAction import UserRegisterAction
 
 class MainAction(Action):
 

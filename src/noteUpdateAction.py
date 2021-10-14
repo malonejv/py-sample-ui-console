@@ -1,7 +1,7 @@
 from businessLogic.noteManager import NoteManager
 from entites.note import Note
-from sampleUI.action import Action
-from sampleUI.console import Console
+from action import Action
+from console import Console
 
 class NoteUpdateAction(Action):
 

@@ -1,11 +1,17 @@
-from businessLogic.userManager import UserManager
-from businessLogic.validationException import ValidationException
-from entites.user import User
-from sampleUI.action import Action
-from sampleUI.console import Console
+from backend.entites.user import User
+from backend.businessLogic.abstract.userBusinessComponent import UserBusinessComponent
+from backend.businessLogic.validationException import ValidationException
+from action import Action
+from console import Console
 
 class UserRegisterAction(Action):
 
+    __manager = None
+
+    def __init__(self, manager: UserBusinessComponent, parentAction: Action = None):
+        super().__init__(parentAction=parentAction)
+        self.__manager = manager
+    
     def FollowInstructions(self):
         try:
             Console.Clear()
@@ -24,12 +30,11 @@ class UserRegisterAction(Action):
             if answer == "S":
                 answer = ""
                 fieldToCorrect = None
-                manager = UserManager()
-
+                
                 while answer not in ["S", "N"]:
                     user = User(names, lastNames, email, password)
                     try:
-                        count = manager.SignUp(user, passwordConfirm)
+                        count = self.__manager.SignUp(user, passwordConfirm)
                     except ValidationException as ex:
                         fieldToCorrect = ex.Field
                         answer = input(f"{str(ex)} \n¿Desea corregir los campos?").upper()

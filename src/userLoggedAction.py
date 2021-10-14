@@ -1,29 +1,32 @@
-from businessLogic.noteManager import NoteManager
-from sampleUI.action import Action
-from sampleUI.console import Console
-from sampleUI.noteCreateAction import NoteCreateAction
-from sampleUI.noteDeleteAction import NoteDeleteAction
-from sampleUI.noteUpdateAction import NoteUpdateAction
+from backend.businessLogic.abstract.noteBusinessComponent import NoteBusinessComponent
+from action import Action
+from console import Console
+from noteCreateAction import NoteCreateAction
+from noteDeleteAction import NoteDeleteAction
+from noteUpdateAction import NoteUpdateAction
 
 
 class UserLoggedAction(Action):
     
-    notesId = {}
+    __loggedUser=None
+    __manager = None
+    __notesId = {}
     
-    def __init__(self, user, parentAction = None):
-        self.LoggedUser = user
+    def __init__(self, user, manager: NoteBusinessComponent, parentAction = None):
         super().__init__(parentAction)
+        self.__loggedUser = user
+        self.__manager = manager
 
     def FollowInstructions(self):
         try:
             Console.Clear()
-            Console.Title(f"Bienvenido { self.LoggedUser.Name }!")
-            manager = NoteManager()
-            notes = manager.GetByUser(self.LoggedUser.Id)
+            Console.Title(f"Bienvenido { self.__loggedUser.Name }!")
+            
+            notes = self.__manager.GetByUser(self.__loggedUser.Id)
 
             i = 1
             for note in notes:
-                self.notesId[i]=note.Id
+                self.__notesId[i]=note.Id
                 print(f"{i} - { note.Title}")
                 i+=1
             print("""\n********************************
@@ -50,11 +53,11 @@ Acciones disponibles:
         nextAction = None
 
         if self.SelectedOption == "C" or self.SelectedOption == "1":
-            nextAction = NoteCreateAction(self.LoggedUser)
+            nextAction = NoteCreateAction(self.__loggedUser)
         elif self.SelectedOption == "E" or self.SelectedOption == "2":
-            nextAction = NoteDeleteAction(self.LoggedUser, self.notesId)
+            nextAction = NoteDeleteAction(self.__loggedUser, self.__notesId)
         elif self.SelectedOption == "M" or self.SelectedOption == "3":
-            nextAction = NoteUpdateAction(self.LoggedUser, self.notesId)
+            nextAction = NoteUpdateAction(self.__loggedUser, self.__notesId)
         elif self.SelectedOption == "S" or self.SelectedOption == "4":
             return None
 

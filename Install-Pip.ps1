@@ -46,13 +46,18 @@ Write-Verbose "Validating $PackagePath exists..."
 Write-Verbose ""    
 if((Test-Path $PackagePath)){
 
-    .\venv\Scripts\deactivate.bat venv
-    .\venv\Scripts\activate
+    try { 
+    #.\.venv\Scripts\deactivate.bat
+    deactivate
+    }
+    catch { }
+    .\.venv\Scripts\activate.ps1
 
     Write-Verbose "Installing package $Package..." 
     Write-Verbose ""    
     Write-Verbose "$PackagePath$Package.whl"  
-    python -m pip install $PackagePath$Package.whl
+    python -m pip install $PackagePath$Package.whl --force-reinstall
+    python -m pip freeze > .\requirements.txt
 }
 
 <#

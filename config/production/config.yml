@@ -1,0 +1,13 @@
+app:
+  EnableTheme: True
+
+dataAccess:
+  database:
+    path: "./sample.db"
+#User=user@sample.com
+#Password=123
+
+#[mysql]
+#username=""
+#password=""
+#port=""
